@@ -37,3 +37,7 @@ export async function deleteLocalFiles(files: Array<string>) {
     fs.unlinkSync(file);
   }
 }
+
+export function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
