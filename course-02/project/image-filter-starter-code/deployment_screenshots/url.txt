@@ -1,0 +1,2 @@
+endpoint:
+http://rb-udagram-filter-dev.us-east-1.elasticbeanstalk.com/
