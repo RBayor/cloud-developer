@@ -1,7 +1,6 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import bodyParser from "body-parser";
-import { filterImageFromURL, deleteLocalFiles, sleep } from "./util/util";
-const fs = require("fs");
+import { filterImageFromURL, deleteLocalFiles } from "./util/util";
 
 (async () => {
   // Init the Express application
@@ -37,11 +36,11 @@ const fs = require("fs");
     res.status(200).send("API up and running");
   });
 
-  app.get("/filteredimage", async (req, res) => {
-    const { image_url } = req.query;
-    console.log(image_url);
-    if (!image_url) res.status(400).send("an image ur is required");
-    let url;
+  app.get("/filteredimage", async (req: Request, res: Response) => {
+    const { image_url }: { image_url: string } = req.query;
+
+    if (!image_url) res.status(400).send("an image url is required");
+    let url: string;
 
     try {
       const filteredUrl = await filterImageFromURL(image_url);
@@ -55,8 +54,7 @@ const fs = require("fs");
         );
     }
     if (url) {
-      await sleep(10000);
-      deleteLocalFiles([url]);
+      res.on("finish", () => deleteLocalFiles([url]));
     }
   });
 
